@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Endpoints</title>
+    <title>Resource Manager</title>
     <!--Libraries, not my work!!!-->
     <script type="text/javascript" src="https://cpee.org/js_libs/jquery.min.js"></script>
     <script type="text/javascript" src="https://cpee.org/js_libs/jquery.browser.js"></script>
@@ -122,22 +122,6 @@
               <button class="save_changes">Save Changes</button>
               <button class="delete_object">Delete Symbol</button>
               <input id="symbol_input" type="file" class="load_object"/>
-              <!--<table>
-                <tr><button class="save_changes">Save Changes</button></tr>
-                <tr><button class="delete_object">Delete Symbol</button></tr>
-                <tr><td></td><input id="symbol_input" type="file" class="load_object"/></td></tr>
-                <tr>
-                  <td>Default Symbol Edge:</td>
-                  <td>
-                    <select id="default_symbol_edge">
-                      <option value="NONE">NONE</option>
-                      <option value="Circle">Circle</option>
-                      <option value="Square">Square</option>
-                    </select>
-                  </td>
-                </tr>
-                <tr><td><a class="link hidden" id="symbol_name" href=""></a></td></tr>
-              </table>-->
               <div id="symbol_editor">
               </div>
               <div id="symbol_preview" class="symbol_preview">
@@ -195,13 +179,6 @@
               <button class="save_changes">Save Changes</button>
               <button class="delete_object">Delete Schema</button>
               <input id="schema_input" type="file" class="load_object"/>
-              <!--<table>
-                <tr><button class="save_changes">Save Changes</button></tr>
-                <tr><button class="delete_object">Delete Schema</button></tr>
-                <tr><td><input id="schema_input" type="file" class="load_object"/></td></tr>
-
-                <tr><td> <a class="link hidden" id="schema_name" href=""></a></td></tr>
-              </table>-->
               <div id="schema_editor">
               </div>
               <div id="schema_preview"></div>
@@ -323,20 +300,9 @@
               <table id="resourceurl_table">
                 <tr>
                   <td>Endpoint Resource URL:</td>
-                  <!--<td><input id=resourceurl_input value="https://cpee.org/flow/resources"/></td>-->
                   <td><input id=resourceurl_input value="https://lehre.bpm.in.tum.de/elsewisy"/></td>
                   <td><button id="resourceurl_button">Update URL</button></td>
                 </tr>
-                <!--<tr>
-                  <td>Symbol Resource URL:</td>
-                  <td><input id="symbol_resourceurl_input" value=""/></td>
-                  <td><button id="symbol_resourceurl_button">Update URL</button></td>
-                </tr>
-                <tr>
-                  <td>Schema Resource URL:</td>
-                  <td><input id="schema_resourceurl_input" value=""/></td>
-                  <td><button id="schema_resourceurl_button">Update URL</button></td>
-                </tr>-->
               </table>
             </div>
           </ui-area>
