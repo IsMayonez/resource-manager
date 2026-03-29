@@ -35,11 +35,9 @@ $(document).ready(function() {// {{{
   baseurl = $("#resourceurl_input").val();
   symbolurl = baseurl + "/symbols/";
   schemaurl = baseurl + "/schemas/"
-  //check_checkmarks();
   Promise.all([get_resources_better(), get_symbols(), get_schemas()]).then(function(){
     sort_endpoints_by_symbol();
     sort_endpoints_by_schema();
-    //check_empty_sorting_buckets();
   }
   );
  
@@ -53,13 +51,8 @@ $(document).ready(function() {// {{{
     resourceid = $(this).parents("tr").attr("resource-id");
     selectedEndpoint = resourceid;
     get_schema_from_cache(resourceid);
-    //get_symbol(resourceid);
     get_symbol_from_cache(resourceid);
     get_properties(resourceid);
-    //check_checkmarks();
-    //console.log("Endpointcont. outer width:" + $("#endpointscontent_better").outerWidth());
-    //console.log("Details outer width:" + $("#details").outerWidth());
-    //console.log("Prev offset left" + $("#endpointscontent_better").offset().left) 
   
   });
   $(document).on('click', '.symbol_detailViewButton, .symbol_resource_better td.link', function(){
@@ -137,11 +130,6 @@ $(document).ready(function() {// {{{
   })
   $(document).on("change", "#default_symbol_edge", function(){
     update_symbol();
-  })
-  $(document).on("change", "#schema_yn, #symbol_yn, #properties_yn", function(){
-    if(resourceid!="NONE"){
-      //check_checkmarks();
-    }
   })
   $(document).on("change", "#sort_picker", function(){
     check_current_sorter();
@@ -269,18 +257,7 @@ function create_new_schema(){
     name = name + ".rng";
   } 
   if(!schemaCache[name] && name!=".rng"){
-    /*var schema_table = $("#schemas_table");
-    var node = $($("#dat_template_schema_resources_better")[0].content.cloneNode(true));
-    node.find('tr').attr('resource-id',name);
-    $('.link',node).text(name);*/
     schemaCache[name] = '<element rngui:version="1.2" rngui:header="Arguments" name="arguments" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" xmlns="http://relaxng.org/ns/structure/1.0" xmlns:rngui="http://rngui.org">\n  <element name="timeout" rngui:label="Duration">\n    <data type="float" rngui:label="duration in seconds"/>\n  </element>\n  <element name="data" rngui:header="Data">\n    <zeroOrMore rngui:label="New Data Element">\n      <element rngui:label="Name">\n        <anyName/>\n        <data type="string" rngui:label="Value"/>\n      </element>\n    </zeroOrMore>\n  </element>\n</element>'
-    /*node.find('tr').addClass("unsaved");
-    schema_table.append(node);
-  
-    var selectnode = $($("#dat_template_picker")[0].content.cloneNode(true));
-    selectnode.find("option").text(name);
-    selectnode.find("option").attr("value", name);
-    $("#symbol_picker").append(selectnode);*/
     $("#new_schema_input").val("");
     change_schema(schemaCache[name], name, "POST");
   } else {
@@ -294,18 +271,8 @@ function create_new_symbol(){
     name = name + ".svg";
   } 
   if(!symbolCache[name] && name!=".svg"){
-    /*var symbol_table = $("#symbols_table");
-    var node = $($("#dat_template_symbol_resources_better")[0].content.cloneNode(true));
-    node.find('tr').attr('resource-id',name);
-    $('.link',node).text(name);*/
     symbolCache[name] = '<svg class="clickable" xmlns="http://www.w3.org/2000/svg">\n  <g class="part-normal">\n    <circle cx="15" cy="15" r="14" class="colorstyle execstyle stand"/>\n    <circle cx="15" cy="15" r="11" class="colorstyle stand"/>\n  </g>\n</svg>'
-    /*node.find('tr').addClass("unsaved");
-    symbol_table.append(node);
-    
-    var selectnode = $($("#dat_template_picker")[0].content.cloneNode(true));
-    selectnode.find("option").text(name);
-    selectnode.find("option").attr("value", name);
-    $("#symbol_picker").append(selectnode);*/
+
     $("#new_symbol_input").val("");
     change_symbol(symbolCache[name], name, "POST");
   } else {
@@ -321,7 +288,7 @@ function change_symbol(symbolContent, symbolName, type){
     contentType: "application/xml",
     dataType: "text",
     success: function(res){
-      //alert("In my resources, straight up posting it. And by it, well, let's just say, my Symbol; Server-res: " + res);
+
     }, error: function(a,b,c){
       alert("POST failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
@@ -339,7 +306,7 @@ function change_schema(schemaContent, schemaName, type){
     contentType: "application/xml",
     dataType: "text",
     success: function(res){
-      //alert("In my resources, straight up posting it. And by it, well, let's just say, my Schema; Server-res: " + res);
+
     }, error: function(a,b,c){
       alert("POST failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
@@ -354,7 +321,7 @@ function post_endpoint(endpointName){
     type: "POST",
     url: baseurl + "/endpoints/" + endpointName,
     success: function(res){
-      //alert("In my resources, straight up posting it. And by it, well, let's just say, my Endpoint; Server-res: " + res);
+
     }, error: function(a,b,c){
       alert("POST failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
@@ -380,7 +347,7 @@ function put_endpoint_symbol(endpointName){
     contentType: "text/plain",
     data: $("#symbol_picker").val(),
     success: function(res){
-      //alert("In my resources, straight up posting it. And by it, well, let's just say, my Endpoint; Server-res: " + res);
+
     }, error: function(a,b,c){
       alert("Symbol PUT failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
@@ -397,7 +364,7 @@ function put_endpoint_schema(endpointName){
     contentType: "text/plain",
     data: $("#schema_picker").val(),
     success: function(res){
-      //alert("In my resources, straight up posting it. And by it, well, let's just say, my Endpoint; Server-res: " + res);
+
     }, error: function(a,b,c){
       alert("Symbol PUT failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
@@ -408,7 +375,7 @@ function delete_symbol(symbolName){
     type: "DELETE",
     url: baseurl + "/symbols/" + symbolName,
     success: function(res){
-      //alert("In my resources, straight up posting it. And by it, well, let's just say, my Endpoint; Server-res: " + res);
+
     }, error: function(a,b,c){
       alert("Symbol DELETE failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
@@ -422,7 +389,7 @@ function delete_schema(schemaName){
     type: "DELETE",
     url: baseurl + "/schemas/" + schemaName,
     success: function(res){
-      //alert("In my resources, straight up posting it. And by it, well, let's just say, my Endpoint; Server-res: " + res);
+
     }, error: function(a,b,c){
       alert("Schema DELETE failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
@@ -436,7 +403,7 @@ function delete_endpoint(endpointName){
     type: "DELETE",
     url: baseurl + "/endpoints/" + endpointName,
     success: function(res){
-      //alert("In my resources, straight up posting it. And by it, well, let's just say, my Endpoint; Server-res: " + res);
+
     }, error: function(a,b,c){
       alert("Endpoint DELETE failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
@@ -447,22 +414,11 @@ function delete_endpoint(endpointName){
 }
 
 function create_new_endpoint(){
-  //var endp = $("#resources_better");
+
   var name = $("#new_endpoint_input").val();
-  // If there exists an entirely empty endpoint directory, you could make a duplicate one with this logic. 
-  // But I assume that entirely empty directories (no symbol, no schema, no prop) do not exist.
+
   if(!(endpointSymbolCache[name] || endpointSchemaCache[name] || propertiesCache[name]) && name!="" ){
-    /*var node = $($("#dat_template_resources_better")[0].content.cloneNode(true));
-    $('.link',node).text(name);
-    node.find('tr').attr('resource-id',name);
-    unsavedBlacklist[name] = true;
-    node.find('tr').addClass("unsaved");
-    endpointSymbolCache[name] = symbolCache["timeout.svg"];
-    endpointSchemaCache[name] = schemaCache["/https-post%3A%2F%2Fcpee.org%2Fservices%2Ftimeout.php/schema.rng"];
-    endp.append(node);
-    sort_endpoints_by_symbol();
-    sort_endpoints_by_schema();
-    check_empty_sorting_buckets();*/
+
     $("#new_endpoint_input").val("");
     post_endpoint(encodeURIComponent(name))
   } else {
@@ -506,8 +462,7 @@ function check_current_sorter(){
 
 function sort_endpoints_by_symbol() {
   $("#resources_better_sorted_symbol").empty()
-  //console.log("ENDPSYMCACHE: " + Object.keys(endpointSymbolCache).length);
-  //console.log("SYMCACHE: " + Object.keys(symbolCache).length);
+
   endpointSymbolCache = Object.keys(endpointSymbolCache).sort().reduce(function(obj, key){obj[key]=endpointSymbolCache[key]; return obj},{});
   symbolCache = Object.keys(symbolCache).sort().reduce(function(obj, key){obj[key]=symbolCache[key]; return obj},{});
   Object.keys(symbolCache).forEach(function(symKey){
@@ -535,8 +490,7 @@ function sort_endpoints_by_schema() {
   $("#resources_better_sorted_schema").empty()
   endpointSchemaCache = Object.keys(endpointSchemaCache).sort().reduce(function(obj, key){obj[key]=endpointSchemaCache[key]; return obj},{});
   schemaCache = Object.keys(schemaCache).sort().reduce(function(obj, key){obj[key]=schemaCache[key]; return obj},{});
-  //console.log(Object.keys(endpointSchemaCache).length);
-  //console.log(Object.keys(schemaCache).length);
+
   Object.keys(schemaCache).forEach(function(symKey){
     if(symKey!="CUSTOM") {
     var node = $($("#dat_template_sorting_bucket")[0].content.cloneNode(true));
@@ -545,7 +499,7 @@ function sort_endpoints_by_schema() {
     
     Object.keys(endpointSchemaCache).forEach(function(key){
       if(endpointSchemaCache[key] == schemaCache[symKey]){
-        //console.log("ENDPKEY: " + key + "  --  " + "SCHEMKEY: "+ symKey)
+
         var elemNode = $($("#dat_template_resources_better")[0].content.cloneNode(true));
         $('.link',elemNode).text(decodeURIComponent(key));
         elemNode.find('tr').attr('resource-id',key);
@@ -596,32 +550,7 @@ function check_for_fits(isSym, resStr) {
 }
 
 function get_schemas(){
-  /*var examples = ["/https-post%3A%2F%2Fcpee.org%2Fflow%2Fstart%2Furl%2F/schema.rng", "/https-post%3A%2F%2Fcpee.org%2Fservices%2Ftimeout.php/schema.rng", "/https-post%3A%2F%2Fcpee.org%2Fing%2Fcorrelators%2Fmessage%2Fsend%2F/schema.rng"]
-  var resourceurl = baseurl + '/endpoints';
-  
-  const promises = examples.map(function(x){
-    return $.ajax({
-      type: "GET",
-      url: resourceurl + x,
-      dataType: "xml",
-      success: function(res){
-        var schema_table = $("#schemas_table");
-        var node = $($("#dat_template_schema_resources_better")[0].content.cloneNode(true));
-        $('.link',node).text(x);
-        node.find('tr').attr('resource-id',x);
-        schema_table.append(node);
-        schemaCache[x] = new XMLSerializer().serializeToString(res);
 
-        var selectnode = $($("#dat_template_picker")[0].content.cloneNode(true));
-        selectnode.find("option").text(x);
-        selectnode.find("option").attr("value", x);
-        $("#schema_picker").append(selectnode);
-      },
-      error: function(a,b,c) {
-        alert("Server not running.");
-      }
-    })
-  });*/
   $("#schemas_table").empty();
   $("#schema_picker").empty();
   return $.ajax({
@@ -629,7 +558,6 @@ function get_schemas(){
     url: schemaurl,
     dataType: "html",
   }).then(function(res){
-      //const promises = $(res).find('a').map(function(){
       const promises = $(res).find('resource').map(function(){
         let rngName = $(this).text();
         var schema_table = $("#schemas_table");
@@ -643,7 +571,6 @@ function get_schemas(){
               node.find('tr').attr('resource-id',rngName);
               $('.link',node).text(rngName);
               schema_table.append(node);
-
               schemaCache[rngName] = new XMLSerializer().serializeToString(res2);
               var selectnode = $($("#dat_template_picker")[0].content.cloneNode(true));
               selectnode.find("option").text(rngName);
@@ -683,7 +610,6 @@ function get_symbols() {
     url: symbolurl,
     dataType: "html",
   }).then(function(res){
-      //const promises = $(res).find('a').map(function(){
       const promises = $(res).find('resource').map(function(){
         let svgName = $(this).text();
         var symbol_table = $("#symbols_table");
@@ -729,25 +655,6 @@ function save_properties (){
 
   saveTextAsFile(JSON.stringify(saveJson, null, 2), "properties.json", "application/json");
 }
-
-
-/*function check_checkmarks(){
-  if($('#schema_yn').prop("checked")){
-    $("#schema_details").removeClass("hidden");
-  } else {
-    $("#schema_details").addClass("hidden");
-  }
-  if($('#symbol_yn').prop("checked")){
-    $("#symbol_details").removeClass("hidden");
-  } else {
-    $("#symbol_details").addClass("hidden");
-  }
-  if($('#properties_yn').prop("checked")){
-    $("#properties_details").removeClass("hidden");
-  } else {
-    $("#properties_details").addClass("hidden");
-  }
-}*/ 
 
 
 function saveTextAsFile(text, filename, type) {
@@ -869,12 +776,6 @@ function get_resources_better() {
       });
       const promises2 = $(res).find('resource').map(function(){
         var uri_bare = $(this).text();
-        /*var uri = decodeURIComponent(uri_bare);
-        var node = $($("#dat_template_resources_better")[0].content.cloneNode(true));
-        $('.link',node).text(uri);
-        node.find('tr').attr('resource-id',uri_bare);
-        endp.append(node);
-        cache_properties($(this).text());*/
         return $.ajax({
           type: "GET",
           url: resourceurl + uri_bare + "/schema.rng",
@@ -958,11 +859,6 @@ function update_symbol(hasNoEditor, symStr) {
     $("#symbol_preview_extra_active"+ suffix+ " g").addClass("active");
     $("#symbol_preview_extra_passive"+ suffix).html(symbolStringPlusExtra);
     $("#symbol_preview_extra_passive"+ suffix+ " g").addClass("passive");
-    
-    //$("#symbol_preview" + suffix +" g").addClass("element");
-    //$("#symbol_preview" + suffix +" g").attr("element-id", "undefined");
-    //$("#symbol_preview_extra" + suffix +" g").addClass("element")
-    //$("#symbol_preview_extra" + suffix +" g").attr("element-id", "undefined")
     
     $("#symbol_preview_interactive_div" + suffix).removeClass("hidden");
     $("#symbol_preview_interactive" + suffix).html(symbolString);
