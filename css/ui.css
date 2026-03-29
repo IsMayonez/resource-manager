@@ -32,7 +32,6 @@ input { font-family: sans-serif; font-size: 1em; }
 .resourcelist {
   margin: 0;
   padding: 0;
-  /*flex: 1;*/
   overflow-x: auto;
   overflow-y: scroll;
   border-right-width: 1px;
@@ -43,7 +42,6 @@ input { font-family: sans-serif; font-size: 1em; }
 }
 
 [is="x-ui-"] ui-content > ui-area.detail_sidebar {
-  /*flex: 1.6;*/
   overflow-x: auto;
   overflow-y: scroll;
   height: 100%;
@@ -93,7 +91,6 @@ option.current {background-color: #cc0000;}
   word-break: break-all;
 }
 .general_resource td:nth-child(1) {background:#dce695;width: 75%; padding-right: 3em; }
-/*.general_resource.unsaved td:nth-child(1){background-color: darkgreen;}*/
 .general_resource.detail_selected td:nth-child(1){background:#eb280e;}
 .general_resource td:nth-child(2) {width: 25%; min-width: 80px;}
 details {
@@ -107,9 +104,6 @@ details table {
 }
 #resourceurlcontent input {width: 30em;}
 
-/*button.save_changes {font-size: large; margin-left: 3px;margin-top: 3px;}
-button.delete_object {font-size: large; margin-left: 3px;margin-top: 3px;}
-.load_object {font-size: large; margin-left: 3px;margin-top: 3px;}*/
 td.div_title {font-size: 1.5em; font-weight: bold; margin-left: 3px;}
 
 #add_property {margin-left: 50px;}
