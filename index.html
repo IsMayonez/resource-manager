@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Endpoints</title>
+    <!--Libraries, not my work!!!-->
+    <script type="text/javascript" src="https://cpee.org/js_libs/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cpee.org/js_libs/jquery.browser.js"></script>
+    <script type="text/javascript" src="https://cpee.org/js_libs/jquery.svg.min.js"></script>
+    <script type="text/javascript" src="https://cpee.org/js_libs/jquery.svgdom.min.js"></script>
+    <script type="text/javascript" src="https://cpee.org/js_libs/vkbeautify.js"></script>
+    <script type="text/javascript" src="https://cpee.org/js_libs/util.js"></script>
+    <script type="text/javascript" src="https://cpee.org/js_libs/printf.js"></script>
+    <script type="text/javascript" src="https://cpee.org/js_libs/strftime.min.js"></script>
+    <script type="text/javascript" src="https://cpee.org/js_libs/parsequery.js"></script>
+    <script type="text/javascript" src="https://cpee.org/js_libs/underscore.min.js"></script>
+    <script type="text/javascript" src="https://cpee.org/js_libs/jquery.caret.min.js"></script>
+    <script type="text/javascript" src="https://cpee.org/js_libs/jquery.cookie.js"></script>
+    <script type="text/javascript" src="https://cpee.org/js_libs/marked.min.js"></script>
+    <script type="text/javascript" src="https://cpee.org/js_libs/relaxngui.js"></script>
+    <!--UIDASH-->
+    <script type="text/javascript" src="https://cpee.org/js_libs/uidash.js"></script>
+    <!--<script type="text/javascript" src="js/uidash.js"></script>-->
+    <!--UIDASH-->
+    <link   rel="stylesheet"      href="https://cpee.org/js_libs/uidash.css" type="text/css"/>
+    <link   rel="stylesheet"      href="https://cpee.org/js_libs/relaxngui.css" type="text/css"/>
+    <link rel="stylesheet" href="https://cpee.org/global_ui/uicpee.css" type="text/css"/>
+    <link rel="stylesheet" href="https://cpee.org/flow/css/wfadaptor.css" type="text/css" data-include-export="true"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.1/ace.js"></script>
+
+    <!--My work-->
+    <script type="text/javascript" src="js/structured.js"></script>
+    <link rel="stylesheet" href="css/ui.css" type="text/css"/>
+  </head>
+  <body data-defaultconfig='index.json' is='x-ui-'>
+    <template id="dat_template_resources_better">
+      <tr class="resource_better general_resource">
+        <td class="link"> </td>
+        <td class="buttons">
+          <button class="detailViewButton" value=''>Details</button>
+          <button class="copyButton" value=''>Copy</button>
+        </td>
+      </tr>
+    </template>   <!--}}}-->
+    <template id="dat_template_symbol_resources_better">
+      <tr class="symbol_resource_better general_resource">
+        <td class="link"> </td>
+        <td class="buttons">
+          <button class="symbol_detailViewButton" value=''>Details</button>
+          <button class="copyButton" value=''>Copy</button>
+        </td>
+      </tr>
+    </template>   <!--}}}-->
+    <template id="dat_template_schema_resources_better">
+      <tr class="schema_resource_better general_resource">
+        <td class="link"> </td>
+        <td class="buttons">
+          <button class="schema_detailViewButton" value=''>Details</button>
+          <button class="copyButton" value=''>Copy</button>
+        </td>
+      </tr>
+    </template>   <!--}}}-->
+    <template id="dat_template_properties">
+      <li class="property">
+        <input class="key" value=""> </input>
+	      <em>:</em>
+        <input class="elem" value=""> </input>
+        <button class="remover_of_properties">REMOVE</button>
+      </li>
+    </template>   <!--}}}-->
+    <template id="dat_template_picker">
+      <option value=""></option>
+    </template>
+    <template id="dat_template_sorting_bucket">
+      <tr class="sorting_bucket">
+        <td>
+          <details open="true">
+            <summary></summary>
+            <table></table>
+          </details>
+        </td>
+      </tr>
+    </template>
+
+
+    <ui-rest id="main">
+        <ui-tabbar>
+          <ui-before></ui-before>
+          <ui-tab class="inactive" data-tab="resourceurl" id="tab_resourceurl">Configure</ui-tab>
+          <ui-space></ui-space>
+          <ui-tab class="" data-tab="endpoints_better"    id="tabendpoints_better">Endpoints</ui-tab>
+          <ui-tab class="inactive" data-tab="new_endpoint"    id="tab_new_endpoint">New</ui-tab>
+          <ui-space></ui-space>
+          <ui-tab class="inactive" data-tab="symbols"    id="tabsymbols">Symbols</ui-tab>
+          <ui-tab class="inactive" data-tab="new_symbol" id="tab_new_symbol">New</ui-tab>
+          <ui-space></ui-space>
+          <ui-tab class="inactive" data-tab="schemas"    id="tabschemas">Schemas</ui-tab>
+          <ui-tab class="inactive" data-tab="new_schema" id="tab_new_schema">New</ui-tab>
+          <ui-behind></ui-behind>
+        </ui-tabbar>
+        <ui-content>
+          
+          <ui-area data-belongs-to-tab="symbols" id="symbolscontent" class="resourcelist inactive"> <!--{ {{-->
+          <div class="x-ui-layout"> 
+            <table id="symbol_search_bar">
+              <tr>
+                <td><input id="symbol_search_input" value=""/></td>
+                <td><button id="symbol_search_button">Search</button></td>
+              </tr>
+            </table>
+            <table id="symbols_table" class="resource_table">
+            </table>
+          </div>
+          </ui-area> <!--}}}-->
+
+	        <ui-resizehandle data-belongs-to-tab="symbols" data-label="drag to resize" class="inactive"></ui-resizehandle>
+
+          <ui-area data-belongs-to-tab="symbols" id="symbols_details" class="detail_sidebar inactive">
+          <div class="x-ui-layout hidden"> 
+            <div id="symbol_details" class="detail_div">
+              <button class="save_changes">Save Changes</button>
+              <button class="delete_object">Delete Symbol</button>
+              <input id="symbol_input" type="file" class="load_object"/>
+              <!--<table>
+                <tr><button class="save_changes">Save Changes</button></tr>
+                <tr><button class="delete_object">Delete Symbol</button></tr>
+                <tr><td></td><input id="symbol_input" type="file" class="load_object"/></td></tr>
+                <tr>
+                  <td>Default Symbol Edge:</td>
+                  <td>
+                    <select id="default_symbol_edge">
+                      <option value="NONE">NONE</option>
+                      <option value="Circle">Circle</option>
+                      <option value="Square">Square</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr><td><a class="link hidden" id="symbol_name" href=""></a></td></tr>
+              </table>-->
+              <div id="symbol_editor">
+              </div>
+              <div id="symbol_preview" class="symbol_preview">
+                <label for="symbol_preview_normal">Normal:</label><svg id="symbol_preview_normal" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_hover">Hover:</label><svg id="symbol_preview_hover" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_selected">Selected:</label><svg id="symbol_preview_selected" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_hover_selected">Hover-Selected:</label><svg id="symbol_preview_hover_selected" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_active">Running:</label><svg id="symbol_preview_active" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_passive">Stopped:</label><svg id="symbol_preview_passive" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+              </div>
+              <div id="symbol_preview_extra" class="symbol_preview">
+                <label for="symbol_preview_extra_normal">Normal:</label><svg id="symbol_preview_extra_normal" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_extra_hover">Hover:</label><svg id="symbol_preview_extra_hover" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_extra_selected">Selected:</label><svg id="symbol_preview_extra_selected" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_extra_hover_selected">Hover-Selected:</label><svg id="symbol_preview_extra_hover_selected" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_extra_active">Running:</label><svg id="symbol_preview_extra_active" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_extra_passive">Stopped:</label><svg id="symbol_preview_extra_passive" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+              </div>
+              <div id="symbol_preview_interactive_div" class="symbol_preview">
+                <label for="symbol_preview_interactive">Interactive:</label><svg id="symbol_preview_interactive" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <table>
+                  <tr>
+                    <td>
+                      <button class="interactive_button" id="symbol_preview_interactive_start_button">Start</button>
+                    </td>
+                    <td>
+                      <button class="interactive_button" id="symbol_preview_interactive_stop_button">Stop</button>
+                    </td>
+                    <td>
+                      <button class="interactive_button" id="symbol_preview_interactive_reset_button">Reset</button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          </ui-area>
+
+          <ui-area data-belongs-to-tab="schemas" id="schemascontent" class="resourcelist inactive"> <!--{ {{-->
+          <div class="x-ui-layout"> 
+            <table id="schema_search_bar">
+              <tr>
+                <td><input id="schema_search_input" value=""/></td>
+                <td><button id="schema_search_button">Search</button></td>
+              </tr>
+            </table>
+            <table id="schemas_table" class="resource_table">
+            </table>
+          </div>
+          </ui-area> <!--}}}-->
+	        <ui-resizehandle data-belongs-to-tab="schemas" data-label="drag to resize" class="inactive"></ui-resizehandle>
+          <ui-area data-belongs-to-tab="schemas" id="schemas_details" class="detail_sidebar inactive">
+            <div class="x-ui-layout hidden"> 
+            <div id="schema_details" class="detail_div">
+              <button class="save_changes">Save Changes</button>
+              <button class="delete_object">Delete Schema</button>
+              <input id="schema_input" type="file" class="load_object"/>
+              <!--<table>
+                <tr><button class="save_changes">Save Changes</button></tr>
+                <tr><button class="delete_object">Delete Schema</button></tr>
+                <tr><td><input id="schema_input" type="file" class="load_object"/></td></tr>
+
+                <tr><td> <a class="link hidden" id="schema_name" href=""></a></td></tr>
+              </table>-->
+              <div id="schema_editor">
+              </div>
+              <div id="schema_preview"></div>
+            </div>
+          </div>  
+          </ui-area>
+
+          <ui-area data-belongs-to-tab="endpoints_better" id="endpointscontent_better" class="resourcelist"> <!--{ {{-->
+          <div class="x-ui-layout">
+            <table id="search bar">
+              <tr>
+                <td><input id=search_input value=""/></td>
+                <td><button id="search_button">Search</button></td>
+                <td class="hidden"><label for="schema_yn">Schema</label><input id="schema_yn" type="checkbox" checked="true"/></td>
+                <td class="hidden"><label for="symbol_yn">Symbol</label><input id="symbol_yn" type="checkbox" checked="true"/></td>
+                <td class="hidden"><label for="properties_yn">Properties</label><input id="properties_yn" type="checkbox" checked="true"/></td>
+                <td>
+                  <label for="sort_picker">Sort by:</label>
+                  <select id="sort_picker">
+                    <option value="NONE">NONE</option>
+                    <option value="Symbol">Symbol</option>
+                    <option value="Schema">Schema</option>
+                  </select>
+                </td>
+              </tr>
+            </table>
+            <table id="search_properties_table">
+            </table>
+            <button id="add_search_property" value="">Add Search Property</button>
+            <table id="resources_better_sorted_symbol" class="resource_table"></table>
+            <table id="resources_better_sorted_schema" class="resource_table hidden"></table>
+            <table id="resources_better" class="resource_table hidden">
+              
+            </table>
+          </div>
+          </ui-area> <!--}}}-->
+	        <ui-resizehandle data-belongs-to-tab="endpoints_better" data-label="drag to resize"></ui-resizehandle>
+          <ui-area data-belongs-to-tab="endpoints_better" id="details" class="detail_sidebar"> <!--{{{-->
+          <div class="x-ui-layout hidden">
+            <tr><td><button class="save_changes">Save Changes</button></td></tr>
+            <tr><button class="delete_object">Delete Endpoint</button></tr>
+            <div id="schema_details_small" class="detail_div">
+              <table>
+                <tr>
+                  <td class="div_title">Schema</td>
+                </tr>
+              </table>
+              <table>
+                <tr>
+                  <td>
+                    <select id="schema_picker">
+                    </select>
+                  </td>
+                </tr>
+              </table>
+              <div id="schema_preview_old"></div>
+            </div>
+            <div id="symbol_details_small" class="detail_div">
+              <table>
+                <tr>
+                  <td class="div_title">Symbol</td>
+                </tr>
+              </table>
+              <table>
+                <tr>
+                  <td>
+                    <select id="symbol_picker">
+                    </select>
+                  </td>
+                </tr>
+              </table>
+              <div id="symbol_preview_old" class="symbol_preview">
+                <label for="symbol_preview_normal_old">Normal:</label><svg id="symbol_preview_normal_old" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_hover_old">Hover:</label><svg id="symbol_preview_hover_old" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_selected_old">Selected:</label><svg id="symbol_preview_selected_old" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_hover_selected_old">Hover-Selected:</label><svg id="symbol_preview_hover_selected_old" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_active_old">Running:</label><svg id="symbol_preview_active_old" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_passive_old">Stopped:</label><svg id="symbol_preview_passive_old" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+              </div>
+              <div id="symbol_preview_extra_old" class="symbol_preview">
+                <label for="symbol_preview_extra_normal_old">Normal:</label><svg id="symbol_preview_extra_normal_old" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_extra_hover_old">Hover:</label><svg id="symbol_preview_extra_hover_old" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_extra_selected_old">Selected:</label><svg id="symbol_preview_extra_selected_old" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_extra_hover_selected_old">Hover-Selected:</label><svg id="symbol_preview_extra_hover_selected_old" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_extra_active_old">Running:</label><svg id="symbol_preview_extra_active_old" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <label for="symbol_preview_extra_passive_old">Stopped:</label><svg id="symbol_preview_extra_passive_old" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+              </div>
+              <div id="symbol_preview_interactive_div_old" class="symbol_preview">
+                <label for="symbol_preview_interactive_old">Interactive:</label><svg id="symbol_preview_interactive_old" xmlns="http://www.w3.org/2000/svg" width="60" height="60"></svg>
+                <table>
+                  <tr>
+                    <td>
+                      <button class="interactive_button" id="symbol_preview_interactive_start_button_old">Start</button>
+                    </td>
+                    <td>
+                      <button class="interactive_button" id="symbol_preview_interactive_stop_button_old">Stop</button>
+                    </td>
+                    <td>
+                      <button class="interactive_button" id="symbol_preview_interactive_reset_button_old">Reset</button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div id="properties_details" class="detail_div">
+              <table>
+                <tr><td class="div_title">Properties</td></tr>
+                <tr><td><a class="link hidden" id="properties_name" href=""></a></td></tr>
+              </table>
+              <ul id="properties_table">
+              </ul>
+              <button id="add_property" value="">Add New Property</button>
+            </div>
+          </div>
+          </ui-area>
+
+          <ui-area data-belongs-to-tab="resourceurl" id="resourceurlcontent" class="inactive">
+            <div class="x-ui-layout">
+              <table id="resourceurl_table">
+                <tr>
+                  <td>Endpoint Resource URL:</td>
+                  <!--<td><input id=resourceurl_input value="https://cpee.org/flow/resources"/></td>-->
+                  <td><input id=resourceurl_input value="https://lehre.bpm.in.tum.de/elsewisy"/></td>
+                  <td><button id="resourceurl_button">Update URL</button></td>
+                </tr>
+                <!--<tr>
+                  <td>Symbol Resource URL:</td>
+                  <td><input id="symbol_resourceurl_input" value=""/></td>
+                  <td><button id="symbol_resourceurl_button">Update URL</button></td>
+                </tr>
+                <tr>
+                  <td>Schema Resource URL:</td>
+                  <td><input id="schema_resourceurl_input" value=""/></td>
+                  <td><button id="schema_resourceurl_button">Update URL</button></td>
+                </tr>-->
+              </table>
+            </div>
+          </ui-area>
+
+          <ui-area data-belongs-to-tab="new_endpoint" id="new_endpoint_content" class="create_new inactive"> <!--{ {{-->
+            <div class="x-ui-layout">
+		          <table>
+                <tr>
+                  <td class="create_new_text">Create New Endpoint</td>
+                </tr>
+                <tr>
+                  <td><input id="new_endpoint_input" placeholder="Endpoint Name" value=""/></td>
+                </tr>
+                <tr>
+                  <td><button id="new_endpoint_button">Create</button></td>
+                </tr>
+              </table>
+	          </div>
+          </ui-area> <!--}}}-->
+
+          <ui-area data-belongs-to-tab="new_symbol" id="new_symbol_content" class="create_new inactive"> <!--{ {{-->
+            <div class="x-ui-layout">
+              <table>
+                <tr>
+                  <td class="create_new_text">Create New Symbol</td>
+                </tr>
+                <tr>
+                  <td><input id="new_symbol_input" placeholder="Symbol Name" value=""/></td>
+                </tr>
+                <tr>
+                  <td><button id="new_symbol_button">Create</button></td>
+                </tr>
+              </table>
+            </div>
+          </ui-area> <!--}}}-->
+
+          <ui-area data-belongs-to-tab="new_schema" id="new_schema_content" class="create_new inactive"> <!--{ {{-->
+            <div class="x-ui-layout">
+              <table>
+                <tr>
+                  <td class="create_new_text">Create New Schema</td>
+                </tr>
+                <tr>
+                  <td><input id="new_schema_input" placeholder="Schema Name" value=""/></td>
+                </tr>
+                <tr>
+                  <td><button id="new_schema_button">Create</button></td>
+                </tr>
+              </table>
+            </div>
+          </ui-area> <!--}}}-->
+
+        </ui-content>
+    </ui-rest>
+
+  </body>
+</html>
