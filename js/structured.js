@@ -331,9 +331,9 @@ function post_endpoint(endpointName){
 }
 
 function put_endpoint(endpointName){
-  put_endpoint_symbol(endpointName).then(
+  handle_properties(endpointName).then(
     put_endpoint_schema(endpointName).then(
-      handle_properties(endpointName).then(
+      put_endpoint_symbol(endpointName).then(
         get_resources_better()
       )
     )
