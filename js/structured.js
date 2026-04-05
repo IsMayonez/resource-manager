@@ -356,7 +356,7 @@ function put_endpoint_symbol(endpointName){
       alert("Symbol PUT failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
   }).then(function(){
-    put_endpoint_schema();
+    put_endpoint_schema(endpointName);
   })
 }
 function put_endpoint_schema(endpointName){
@@ -677,7 +677,7 @@ function change_properties(propertiesContent, endpointName, type){
       alert("POST failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
   }).then(function(){
-    put_endpoint_symbol();
+    put_endpoint_symbol(endpointName);
   })
 }
 
@@ -689,7 +689,7 @@ function handle_properties(endpointName){
         delete_properties(endpointName);
       }
     } else {
-      put_endpoint_symbol();
+      put_endpoint_symbol(endpointName);
     }
   } else {
     var saveString = "{"
@@ -715,6 +715,8 @@ function delete_properties(endpointName){
     }, error: function(a,b,c){
       alert("Properties DELETE failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
+  }).then(function(){
+    put_endpoint_symbol(endpointName);
   })
 }
 function saveTextAsFile(text, filename, type) {
