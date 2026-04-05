@@ -16,7 +16,7 @@ var selectedSymbol
 var selectedSchema
 var selectedEndpoint
 
-$(document).ready(function() {// {{{
+$(document).ready(function() {
   $("#new_schema_input").val("");
   $("#new_symbol_input").val("");
   $("#new_endpoint_input").val("");
@@ -217,7 +217,7 @@ $(document).ready(function() {// {{{
       this.files[0].text().then((content) => temp_load_schema(content));
     }
   })
-});// }}}
+})
 
 function temp_load_symbol(symbol_string){
   editorSvg.setValue(symbol_string);
@@ -332,9 +332,12 @@ function post_endpoint(endpointName){
 
 function put_endpoint(endpointName){
   put_endpoint_symbol(endpointName).then(
-    put_endpoint_schema(endpointName).then(function(){
-    get_resources_better();
-  }))
+    put_endpoint_schema(endpointName).then(
+      handle_properties(endpointName).then(
+        get_resources_better()
+      )
+    )
+  )
 }
 function put_endpoint_symbol(endpointName){
   if($("#symbol_picker").val() == "CUSTOM"){
@@ -656,7 +659,58 @@ function save_properties (){
   saveTextAsFile(JSON.stringify(saveJson, null, 2), "properties.json", "application/json");
 }
 
+function change_properties(propertiesContent, endpointName, type){
+  return $.ajax({
+    type: type,
+    url: baseurl + '/endpoints/' + endpointName + '/properties.json',
+    data: propertiesContent,
+    contentType: "application/json",
+    dataType: "text",
+    success: function(res){
 
+    }, error: function(a,b,c){
+      alert("POST failed; Server-res: " + a + " ||| " + b + " ||| " + c)
+    }
+  }).then(function(){
+    get_resources_better();
+  })
+}
+
+function handle_properties(endpointName){
+  if($("#properties_table").is(':empty')) {
+    if(propertiesCache[endpointName] != "NONE") {
+      if(window.confirm("Are you sure you want to delete the Properties.json of the Endpoint "+ selectedEndpoint +"?")){
+        delete_properties(endpointName)
+      }
+    }
+  } else {
+    var saveString = "{"
+    $("#properties_table li").each(function(){
+      saveString = saveString + '"' + $(this).find(".key").val() + '"' + ":" +'"' + $(this).find(".elem").val() + '"' + ",";
+    })
+    saveString = saveString.slice(0,-1) + "}";
+    saveJson = JSON.parse(saveString);
+    if(propertiesCache[endpointName] != "NONE") {
+      change_properties(saveJson, endpointName, "PUT");
+    } else {
+      change_properties(saveJson, endpointName, "POST");
+    }
+  }
+}
+
+function delete_properties(endpointName){
+  return $.ajax({
+    type: "DELETE",
+    url: baseurl + "/endpoints/" + endpointName + "/properties.json",
+    success: function(res){
+
+    }, error: function(a,b,c){
+      alert("Properties DELETE failed; Server-res: " + a + " ||| " + b + " ||| " + c)
+    }
+  }).then(function(){
+    get_resources_better();
+  })
+}
 function saveTextAsFile(text, filename, type) {
   const blob = new Blob([text], { type });
   const element = document.createElement('a');
@@ -744,6 +798,8 @@ function cache_properties(resid) {
     dataType: "json",
     success: function(res){
       propertiesCache[resid] = res;
+    }, error: function(a,b,c){
+      propertiesCache[resid] = "NONE"
     }
   })
 }
