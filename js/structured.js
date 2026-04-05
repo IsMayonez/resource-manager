@@ -683,6 +683,8 @@ function handle_properties(endpointName){
       if(window.confirm("Are you sure you want to delete the Properties.json of the Endpoint "+ selectedEndpoint +"?")){
         delete_properties(endpointName)
       }
+    } else {
+      return;
     }
   } else {
     var saveString = "{"
