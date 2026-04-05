@@ -671,8 +671,6 @@ function change_properties(propertiesContent, endpointName, type){
     }, error: function(a,b,c){
       alert("POST failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
-  }).then(function(){
-    get_resources_better();
   })
 }
 
@@ -681,7 +679,7 @@ function handle_properties(endpointName){
     console.log(propertiesCache[endpointName]);
     if(propertiesCache[endpointName] != "NONE") {
       if(window.confirm("Are you sure you want to delete the Properties.json of the Endpoint "+ selectedEndpoint +"?")){
-        delete_properties(endpointName)
+        return delete_properties(endpointName)
       }
     } else {
       return;
@@ -694,9 +692,9 @@ function handle_properties(endpointName){
     saveString = saveString.slice(0,-1) + "}";
     saveJson = JSON.parse(saveString);
     if(propertiesCache[endpointName] != "NONE") {
-      change_properties(saveJson, endpointName, "PUT");
+      return change_properties(saveJson, endpointName, "PUT");
     } else {
-      change_properties(saveJson, endpointName, "POST");
+      return change_properties(saveJson, endpointName, "POST");
     }
   }
 }
@@ -710,8 +708,6 @@ function delete_properties(endpointName){
     }, error: function(a,b,c){
       alert("Properties DELETE failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
-  }).then(function(){
-    get_resources_better();
   })
 }
 function saveTextAsFile(text, filename, type) {
