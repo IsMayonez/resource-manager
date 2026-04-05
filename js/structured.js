@@ -677,7 +677,7 @@ function change_properties(propertiesContent, endpointName, type){
 }
 
 function handle_properties(endpointName){
-  if($("#properties_table").is(':empty')) {
+  if($("#properties_table li").length == 0) {
     console.log(propertiesCache[endpointName]);
     if(propertiesCache[endpointName] != "NONE") {
       if(window.confirm("Are you sure you want to delete the Properties.json of the Endpoint "+ selectedEndpoint +"?")){
