@@ -663,7 +663,7 @@ function change_properties(propertiesContent, endpointName, type){
   return $.ajax({
     type: type,
     url: baseurl + '/endpoints/' + endpointName + '/properties.json',
-    data: propertiesContent,
+    data: JSON.stringify(propertiesContent),
     contentType: "application/json",
     dataType: "text",
     success: function(res){
