@@ -331,13 +331,14 @@ function post_endpoint(endpointName){
 }
 
 function put_endpoint(endpointName){
-  handle_properties(endpointName).then(
+  handle_properties(endpointName);
+  /*handle_properties(endpointName).then(
     put_endpoint_schema(endpointName).then(
       put_endpoint_symbol(endpointName).then(
         get_resources_better()
       )
     )
-  )
+  )*/
 }
 function put_endpoint_symbol(endpointName){
   if($("#symbol_picker").val() == "CUSTOM"){
@@ -354,6 +355,8 @@ function put_endpoint_symbol(endpointName){
     }, error: function(a,b,c){
       alert("Symbol PUT failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
+  }).then(function(){
+    put_endpoint_schema();
   })
 }
 function put_endpoint_schema(endpointName){
@@ -371,6 +374,8 @@ function put_endpoint_schema(endpointName){
     }, error: function(a,b,c){
       alert("Symbol PUT failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
+  }).then(function(){
+    get_resources_better();
   })
 }
 function delete_symbol(symbolName){
@@ -671,6 +676,8 @@ function change_properties(propertiesContent, endpointName, type){
     }, error: function(a,b,c){
       alert("POST failed; Server-res: " + a + " ||| " + b + " ||| " + c)
     }
+  }).then(function(){
+    put_endpoint_symbol();
   })
 }
 
@@ -679,10 +686,10 @@ function handle_properties(endpointName){
     console.log(propertiesCache[endpointName]);
     if(propertiesCache[endpointName] != "NONE") {
       if(window.confirm("Are you sure you want to delete the Properties.json of the Endpoint "+ selectedEndpoint +"?")){
-        return delete_properties(endpointName)
+        delete_properties(endpointName);
       }
     } else {
-      return;
+      put_endpoint_symbol();
     }
   } else {
     var saveString = "{"
@@ -692,9 +699,9 @@ function handle_properties(endpointName){
     saveString = saveString.slice(0,-1) + "}";
     saveJson = JSON.parse(saveString);
     if(propertiesCache[endpointName] != "NONE") {
-      return change_properties(saveJson, endpointName, "PUT");
+      change_properties(saveJson, endpointName, "PUT");
     } else {
-      return change_properties(saveJson, endpointName, "POST");
+      change_properties(saveJson, endpointName, "POST");
     }
   }
 }
