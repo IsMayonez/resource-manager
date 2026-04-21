@@ -86,7 +86,11 @@ $(document).ready(function() {
   });
   $(document).on('click', '#resourceurl_button', function() {
     baseurl = $("#resourceurl_input").val();
+    symbolurl = baseurl + "/symbols/";
+    schemaurl = baseurl + "/schemas/"
     get_resources_better();
+    get_symbols();
+    get_schemas();
   });
   $(document).on("click", ".copyButton", function() {
     navigator.clipboard.writeText(decodeURIComponent($(this).parents("tr").attr("resource-id")));
