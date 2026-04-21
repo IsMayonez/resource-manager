@@ -344,6 +344,7 @@ function put_endpoint(endpointName) {
 
 function put_endpoint_symbol(endpointName) {
   if ($("#symbol_picker").val() == "CUSTOM") {
+    get_resources_better();
     return;
   }
   return $.ajax({
@@ -365,6 +366,7 @@ function put_endpoint_symbol(endpointName) {
 
 function put_endpoint_schema(endpointName) {
   if ($("#schema_picker").val() == "CUSTOM") {
+    get_resources_better();
     return;
   }
   return $.ajax({
